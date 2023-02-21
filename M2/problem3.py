@@ -5,6 +5,7 @@ a4 = ["-1", "2", "-3", "4", "-5", "5", "-6", "6", "-7", "7"]
 
 
 def process_array(num, arr):
+    a5=[]
     print("\nProcessing Array({}): \n\n".format(num))
     print(arr)
     print("\nPositive Output:\n")
@@ -13,8 +14,8 @@ def process_array(num, arr):
         if type(number) is str:
             number = int(number)
         number = abs(number)
-        print(number, end=" ")
-
+        a5.append(number)
+    print(a5)
 
 print("Problem 3")
 process_array(1, a1)

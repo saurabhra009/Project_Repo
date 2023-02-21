@@ -10,8 +10,8 @@ def process_array(num, arr):
     total = 0.00
     # TODO add necessary code here for sum; every number must have two decimal places shown
     for number in arr:
-        total += round(number, 2)
-    print("\nThe total is {}:\n".format(round(total, 2)))
+        total += number
+    print("\nThe total is {}:\n",format(total, ".2f"))
 
 
 print("Problem 2")
