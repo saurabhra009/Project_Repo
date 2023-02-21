@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Assignment 2-OS",
+        "due": "2023-02-22 02:35:35",
+        "lastActivity": "2023-02-20 20:00:00.480117",
+        "description": "Complete Operating System Assignment 2",
+        "done": "2023-02-20 22:18:39.403771"
+    },
+    {
+        "name": "soccer",
+        "due": "2023-02-24 02:35:36",
+        "lastActivity": "2023-02-20 21:22:54.524712",
+        "description": "Play soccer with friends",
+        "done": "2023-02-20 21:35:56.472155"
+    },
+    {
+        "name": "Laundary",
+        "due": "2023-02-25 02:35:35",
+        "lastActivity": "2023-02-20 22:01:43.204914",
+        "description": "Do the laundary for this week",
+        "done": "2023-02-20 22:18:23.387066"
+    },
+    {
+        "name": "Cricket",
+        "due": "2023-02-24 10:25:25",
+        "lastActivity": "2023-02-20 22:35:31.724158",
+        "description": "Play Cricket",
+        "done": false
+    },
+    {
+        "name": "medicine",
+        "due": "2023-02-19 10:25:25",
+        "lastActivity": "2023-02-20 22:39:54.052244",
+        "description": "take medicine",
+        "done": false
+    },
+    {
+        "name": "project",
+        "due": "2023-02-25 10:25:25",
+        "lastActivity": "2023-02-20 22:50:01.366473",
+        "description": "python project",
+        "done": false
+    }
+]
