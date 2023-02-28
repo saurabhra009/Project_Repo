@@ -18,8 +18,8 @@ class MyCalc:
         self.ans -= num
     
     def multiply(self, num):
-        # My UCID      ---> am3496
-        # Date written ---> 02/21/23
+        # My UCID      ---> Smr9
+        # Date written ---> 02/25/23
         # Summary: Multiply the running ans by num.
         if self.ans == 0:
             self.ans = num
@@ -27,7 +27,7 @@ class MyCalc:
         self.ans *= num
     
     def divide(self, num):
-        # My UCID      ---> am3496
+        # My UCID      ---> Smr9
         # Date written ---> 02/25/23
         # Summary:Divide the running total by num.Return an error message if num is zero.
         if self.ans == 0:
