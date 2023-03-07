@@ -53,9 +53,9 @@ def test_number_sub_number():
     #Summary: The test_number_sub_number() function tests the subtract() method of the MyCalc class by creating an instance of the 
     # class, subtracting two numbers from it, and checking that the value of the ans attribute is correct.
     calc = MyCalc()
-    calc.subtract(5)
     calc.subtract(10)
-    assert calc.ans == -15
+    calc.subtract(5)
+    assert calc.ans == 5
 
 def test_ans_sub_number():
     # My UCID      ---> Smr9
@@ -66,8 +66,8 @@ def test_ans_sub_number():
     # and checks that the value of the ans attribute is correct.
     calc = MyCalc()
     calc.ans = 5
-    calc.subtract(10)
-    assert calc.ans == -5
+    calc.subtract(2)
+    assert calc.ans == 3
 
 def test_number_mult_number():
     # My UCID      ---> Smr9
@@ -141,9 +141,9 @@ def test_addition(new_calc, nums, expected_ans):
     assert new_calc.ans == expected_ans
 
 @pytest.mark.parametrize("nums, expected_ans", [
-    ([5, 10], -15),
-    ([0, 5, 10], -15),
-    ([-5, -10], 15)
+    ([10, 5], 5),
+    ([50, 40, 2], -8),
+    ([30, 20], 10)
 ])
 def test_subtraction(new_calc, nums, expected_ans):
     # My UCID      ---> Smr9
