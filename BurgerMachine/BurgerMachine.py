@@ -10,7 +10,7 @@ class Usable:
     quantity = 0
     cost = 99
 
-    def __init__(self, name, quantity = 10, cost=99):
+    def __init__(self, name, quantity = 1, cost=99):
         self.name = name
         self.quantity = quantity
         self.cost = cost
@@ -18,12 +18,11 @@ class Usable:
     def use(self):
         self.quantity -= 1
         if (self.quantity < 0):
-            print
             raise OutOfStockException
         return self.quantity 
 
     def in_stock(self):
-        return self.quantity > 0
+        return self.quantity > -1
     def __repr__(self) -> str:
         return self.name
 
@@ -48,12 +47,11 @@ class BurgerMachine:
     MAX_PATTIES = 3
     MAX_TOPPINGS = 3
 
-
     buns = [Bun(name="No Bun", cost=0), Bun(name="White Burger Bun", cost=1), Bun("Wheat Burger Bun", cost=1.25),Bun("Lettuce Wrap", cost=1.5)]
-    patties = [Patty(name="Turkey", quantity=10, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
+    patties = [Patty(name="Turkey", quantity=2, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
     toppings = [Topping(name="Lettuce", quantity=10, cost=.25), Topping(name="Tomato", quantity=10, cost=.25), Topping(name="Pickles", quantity=10, cost=.25), \
     Topping(name="Cheese", quantity=10, cost=.25), Topping(name="Ketchup", quantity=10, cost=.25),
-    Topping(name="Mayo", quantity=10, cost=.25), Topping(name="Mustard", quantity=10, cost=.25),Topping(name="BBQ", quantity=10, cost=.25)] 
+    Topping(name="Mayo", quantity=2, cost=.25), Topping(name="Mustard", quantity=10, cost=.25),Topping(name="BBQ", quantity=10, cost=.25)] 
 
     # variables
     remaining_uses = USES_UNTIL_CLEANING
@@ -73,7 +71,7 @@ class BurgerMachine:
     # 4 - toppings can't exceed max
     # 5 - proper cost must be calculated and shown to the user
     # 6 - cleaning must be done after certain number of uses before any more burgers can be made
-    # 7 - total sales should calculate properly based on cost calculation
+    # 7 - total sales should calculate properly based on cost calculationx
     # 8 - total_burgers should increment properly after a payment
     
 
@@ -103,7 +101,6 @@ class BurgerMachine:
                     self.remaining_uses -= 1
                     return
         raise InvalidChoiceException
-
 
     def pick_toppings(self, choice):
         if self.currently_selecting != STAGE.Toppings:
@@ -136,11 +133,14 @@ class BurgerMachine:
         self.pick_bun(bun)
         self.currently_selecting = STAGE.Patty
 
+
     def handle_patty(self, patty):
         if patty == "next":
             self.currently_selecting = STAGE.Toppings
         else:
             self.pick_patty(patty)
+
+
 
     def handle_toppings(self, toppings):
         if toppings == "done":
@@ -166,8 +166,8 @@ class BurgerMachine:
 
     def calculate_cost(self):
         # TODO add the calculation expression/logic for the inprogress_burger
-        # My UCID Smr9
-        # Date:03/20/23
+        # UCID: Smr9
+        # Date: 03/20/2023
         # This method iterates through the inprogress_burger list and adds up
         # the cost of each item to the cost variable. Finally, it returns the calculated cost.
         cost = 0
@@ -177,36 +177,37 @@ class BurgerMachine:
 
         
     def run(self):
-        # My UCID Smr9
-        # Date:03/20/23
         try:
             if self.currently_selecting == STAGE.Bun:
-                # My UCID Smr9
-                # Date:03/20/23            
+                # UCID: Smr9
+                # Date: 03/20/2023          
                 bun = input(f"What type of bun would you like {', '.join(list(map(lambda c:c.name.lower(), filter(lambda c: c.in_stock(), self.buns))))}?\n")
-                while bun.lower() == "no bun":
-                    print("can't add patties/toppings without a bun choice")
-                    bun = input(f"What type of bun would you like {', '.join(list(map(lambda c:c.name.lower(), filter(lambda c: c.in_stock(), self.buns))))}?\n")
-                    
+
                 try:
                     self.handle_bun(bun)
                 except OutOfStockException:
                     print(f"{bun} is currently out of stock.")
+                    
+                    
                 except InvalidChoiceException:
+                # UCID: Smr9
+                # Date: 03/20/2023
                     print("Invalid choice. Please select a valid bun.")
                 self.print_current_burger()
                 
                 
             elif self.currently_selecting == STAGE.Patty:
-                # My UCID Smr9
-                # Date:03/20/23
+                # UCID: Smr9
+                # Date: 03/20/2023
                 patty = input(f"Would type of patty would you like {', '.join(list(map(lambda f:f.name.lower(), filter(lambda f: f.in_stock(), self.patties))))}? Or type next.\n")
                 try:
                     self.handle_patty(patty)
                 except OutOfStockException:
                     print(f"{patty} is currently out of stock.")
-                    return
+                    
                 except NeedsCleaningException:
+                # UCID: Smr9
+                # Date: 03/20/2023
                     while True:
                         clean = input("The burger machine needs cleaning. Type 'clean' to clean the machine: ")
                         if clean.lower() == "clean":
@@ -214,6 +215,8 @@ class BurgerMachine:
                             self.remaining_uses = self.USES_UNTIL_CLEANING
                             break
                 except InvalidChoiceException:
+                    # UCID: Smr9
+                    # Date: 03/20/2023
                     print("Invalid choice. Please select a valid patty.")
                 except ExceededRemainingChoicesException:
                     print("**You have exceeded the maximum number of patties for this burger.**")
@@ -224,16 +227,22 @@ class BurgerMachine:
                 
                 
             elif self.currently_selecting == STAGE.Toppings:
-                # My UCID Smr9
-                # Date:03/20/23
+                # UCID: Smr9
+                # Date: 03/20/2023
                 toppings = input(f"What topping would you like {', '.join(list(map(lambda t:t.name.lower(), filter(lambda t: t.in_stock(), self.toppings))))}? Or type done.\n")
                 try:
                     self.handle_toppings(toppings)
                 except OutOfStockException:
+                    # UCID: Smr9
+                    # Date: 03/20/2023
                     print(f"{toppings} is currently out of stock.")
                 except InvalidChoiceException:
+                    # UCID: Smr9
+                    # Date: 03/20/2023
                     print("Invalid choice. Please select a valid topping.")
                 except ExceededRemainingChoicesException:
+                    # UCID: Smr9
+                    # Date: 03/20/2023
                     print("**You have reached the maximum number of toppings allowed**")
                     print("Can add up to 3 toppings of any combination!")
                 self.print_current_burger()
@@ -241,8 +250,8 @@ class BurgerMachine:
             elif self.currently_selecting == STAGE.Pay:
                 # show expected value as currency format
                 # require total to be entered as currency format
-                # My UCID Smr9
-                # Date:03/20/23
+                # UCID: Smr9
+                # Date: 03/20/2023
                 expected = self.calculate_cost()
                 total = input(f"**Your total is {locale.currency(expected)}, please enter the exact value.**\n")
                 # the locale.setlocale(locale.LC_ALL, 'en_US') call sets the locale to the default locale on the system, 
@@ -250,10 +259,12 @@ class BurgerMachine:
                 # The locale.currency() function is then used to format the expected value as currency, and the input() 
                 # function is used to prompt the user to enter the total in currency format.
                 try:
-                    # My UCID Smr9
-                    # Date:03/20/23
+                    # UCID: Smr9
+                    # Date: 03/20/2023
                     self.handle_pay(expected, total)
                 except InvalidPaymentException:
+                    # UCID: Smr9
+                    # Date: 03/20/2023
                     print("Invalid Payment,Please try again.")
                     self.handle_pay(expected, total)
 
@@ -290,7 +301,3 @@ class BurgerMachine:
 if __name__ == "__main__":
     bm = BurgerMachine()
     bm.start()
-    
-    
-    
-    #new
