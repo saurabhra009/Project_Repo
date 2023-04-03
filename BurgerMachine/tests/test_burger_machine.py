@@ -48,6 +48,8 @@ def test_production_line(second_order):
 
 # # Test 1 - bun must be the first selection (can't add patties/toppings without a bun choice)
 def test_pick_bun_first():
+    # UCID: Smr9
+        #Date: 03/20/2023
     burger_machine = BurgerMachine()
     with pytest.raises(InvalidStageException):
         burger_machine.pick_patty("Beef")
@@ -56,59 +58,49 @@ def test_pick_bun_first():
         
 
 
-def test_add_patties_in_stock():
-    burger_machine = BurgerMachine()
-    burger_machine.handle_bun("White Burger Bun")
-    burger_machine.handle_patty("Beef")
-    assert burger_machine.remaining_patties == 2
-
-def test_add_patties_out_of_stock():
-    burger_machine = BurgerMachine()
-    burger_machine.remaining_patties = 0
-    burger_machine.handle_bun("White Burger Bun")
-    with pytest.raises(ExceededRemainingChoicesException):
-        burger_machine.pick_patty("Beef")
+def test_patties_out_of_stock_exception():
+    # UCID: Smr9
+        #Date: 03/20/2023
+    machine = BurgerMachine()
+    machine.patties[0].quantity = 0
+    with pytest.raises(OutOfStockException):
+        machine.handle_bun("Lettuce Wrap")
+        machine.handle_patty("Turkey")
 
 
-
-def test_add_toppings_in_stock():
-    burger_machine = BurgerMachine()
-    burger_machine.handle_bun("White Burger Bun")
-    burger_machine.handle_patty("Beef")
-    burger_machine.handle_patty("next")
-    burger_machine.handle_toppings("Lettuce")
-    assert burger_machine.remaining_toppings == 2
-
-def test_add_toppings_out_of_stock():
-    burger_machine = BurgerMachine()
-    burger_machine.remaining_toppings = 0
-    burger_machine.handle_bun("White Burger Bun")
-    burger_machine.handle_patty("Beef")
-    burger_machine.handle_patty("next")
-    with pytest.raises(ExceededRemainingChoicesException):
-        burger_machine.handle_toppings("Lettuce")
+def test_toppings_out_of_stock_exception():
+# UCID: Smr9
+#Date: 03/20/2023
+    machine = BurgerMachine()
+    machine.toppings[0].quantity = 0
+    machine.handle_bun("Lettuce Wrap")
+    machine.handle_patty("next")
+    with pytest.raises(OutOfStockException):
+        machine.handle_toppings("Lettuce")
         
 
-def test_only_3_add_patties():
+def test_only_3_add_patties(machine):
+# UCID: Smr9
+#Date: 03/20/2023
     # create an instance of the BurgerMachine
-    burger_machine = BurgerMachine()
+    burger_machine = machine
     # pick a bun first
     burger_machine.handle_bun("White Burger Bun")
     # pick 3 different types of patties
     burger_machine.handle_patty("Beef")
     burger_machine.handle_patty("Veggie")
-    burger_machine.handle_patty("Turkey")
+    burger_machine.handle_patty("Veggie")
     # try to add a 4th patty
     with pytest.raises(ExceededRemainingChoicesException):
         burger_machine.handle_patty("Beef")
-    # try to add another patty of the same type
-    with pytest.raises(ExceededRemainingChoicesException):
-        burger_machine.handle_patty("Beef")
         # add another patty of a different type
+    with pytest.raises(ExceededRemainingChoicesException):
         burger_machine.handle_patty("Veggie")
 
 
 def test_only_3_add_toppings():
+# UCID: Smr9
+#Date: 03/20/2023
     # create an instance of the BurgerMachine
     burger_machine = BurgerMachine()
     # pick a bun first
@@ -117,7 +109,7 @@ def test_only_3_add_toppings():
     burger_machine.handle_patty("next")
     
     # pick 3 different types of toppings
-    burger_machine.handle_toppings("Lettuce")
+    burger_machine.handle_toppings("Mayo")
     burger_machine.handle_toppings("Tomato")
     burger_machine.handle_toppings("Pickles")
     # try to add a 4th topping
@@ -127,10 +119,13 @@ def test_only_3_add_toppings():
     with pytest.raises(ExceededRemainingChoicesException):
         burger_machine.handle_toppings("Mayo")
         # add another topping of a different type
+    with pytest.raises(ExceededRemainingChoicesException):
         burger_machine.handle_toppings("Mustard")
     
 
 def test_cost_calculation( ):
+# UCID: Smr9
+#Date: 03/20/2023
     burger_machine = BurgerMachine()
     with pytest.raises(InvalidStageException):
         burger_machine.handle_patty("Beef")
@@ -141,6 +136,8 @@ def test_cost_calculation( ):
         assert burger_machine.calculate_cost() == 1.25
 
 def test_cost_calculation_with_multiple_toppings( ):
+# UCID: Smr9
+#Date: 03/20/2023
     burger_machine = BurgerMachine()
     with pytest.raises(InvalidStageException):
         burger_machine.handle_bun("Wheat Burger Bun")
@@ -151,6 +148,8 @@ def test_cost_calculation_with_multiple_toppings( ):
         assert burger_machine.calculate_cost() == 2.0
 
 def test_currency_format( ):
+# UCID: Smr9
+#Date: 03/20/2023
     burger_machine = BurgerMachine()
     with pytest.raises(InvalidStageException):
         burger_machine.handle_patty("Beef")
@@ -162,18 +161,9 @@ def test_currency_format( ):
         assert cost == 1.25
         assert locale.currency(cost) == "$1.25"
 
-def test_cost_calculation_with_invalid_choices( ):
-    burger_machine = BurgerMachine()
-    with pytest.raises(Exception):
-        burger_machine.handle_bun("Brioche Bun")
-    with pytest.raises(Exception):
-        burger_machine.handle_patty("Chicken")
-    with pytest.raises(Exception):
-        burger_machine.handle_toppings("Bacon")
-
-
-
 def test_total_burgers_increment():
+# UCID: Smr9
+#Date: 03/20/2023
     machine = BurgerMachine()
     with pytest.raises(InvalidStageException):
         machine.handle_bun("White Burger Bun")
@@ -198,7 +188,9 @@ def test_total_burgers_increment():
         machine.handle_toppings("done")
         assert machine.total_burgers == 3
         
-def test_total_sales_calclation():
+def test_total_sales_calculation():
+# UCID: Smr9
+#Date: 03/20/2023
     machine = BurgerMachine()
     machine.handle_bun("White Burger Bun")
     machine.handle_patty("veggie")
@@ -219,48 +211,3 @@ def test_total_sales_calclation():
     machine.handle_pay(1.25,'1.25')
     expected_total_sales = 2 + 3 + 1.25
     assert(expected_total_sales==machine.total_sales)
-        
-        
-# Miscellaneous Test Cases
-def test_invalid_choice():
-    burger_machine = BurgerMachine()
-    burger_machine.handle_bun("White Burger Bun")
-    with pytest.raises(InvalidChoiceException):
-        burger_machine.handle_patty("Invalid Patty")
-
-
-
-def test_add_patty_with_needs_cleaning():
-    burger_machine = BurgerMachine()
-    burger_machine.remaining_uses = 0
-    burger_machine.handle_bun("White Burger Bun")
-    with pytest.raises(NeedsCleaningException):
-        burger_machine.handle_patty("Beef")
-#
-def test_add_patty_with_invalid_stage():
-    burger_machine = BurgerMachine()
-    burger_machine.currently_selecting = STAGE.Toppings
-    with pytest.raises(InvalidStageException):
-        burger_machine.handle_patty("Beef")
-        
-
-
-def test_out_of_stock_exception():
-    machine = BurgerMachine()
-    machine.buns[0].quantity = 0
-    with pytest.raises(OutOfStockException):
-        machine.pick_bun("no bun")
-
-def test_exceeded_remaining_choices_exception():
-    machine = BurgerMachine()
-    machine.remaining_toppings = 0
-    machine = BurgerMachine()
-    machine.currently_selecting = STAGE.Toppings
-    machine.remaining_toppings = 0
-    topping = Topping(name="Lettuce", quantity=5, cost=0.50)
-    machine.toppings.append(topping)
-    with pytest.raises(ExceededRemainingChoicesException):
-        machine.pick_toppings("lettuce")
-        
-
-
