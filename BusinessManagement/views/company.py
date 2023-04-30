@@ -9,54 +9,56 @@ def search():
     # TODO search-1 retrieve id, name, address, city, country, state, zip, website, employee count as employees for the company
     # don't do SELECT *
 
-    query = """SELECT c.id, c.name, c.address, c.city, c.country, c.state, c.zip, c.website, COUNT(e.id) AS employees FROM IS601_MP3_Companies c 
+    query = b"""SELECT c.id, c.name, c.address, c.city, c.country, c.state, c.zip, c.website, COUNT(e.id) AS employees FROM IS601_MP3_Companies c 
     LEFT JOIN IS601_MP3_Employees e ON e.company_id = c.id WHERE 1=1 """
     #UCID:Smr9; Date: 04/13/23
     
     args = []  # <--- add values to replace %s/%(named)s placeholders
-    allowed_columns = ["name", "city", "country", "state"]
+    allowed_columns = [b"name", b"city", b"country", b"state"]
     allowed_list = [(v, v) for v in allowed_columns]
     # TODO search-2 get name, country, state, column, order, limit request args
-    name = request.args.get('name')
-    country = request.args.get('country')
-    state = request.args.get('state')
+    name = request.args.get(b'name')
+    country = request.args.get(b'country')
+    state = request.args.get(b'state')
     limit = 10
-    column = request.args.get('column')
-    order = request.args.get('order')
-    limit = request.args.get('limit')
+    column = request.args.get(b'column')
+    order = request.args.get(b'order')
+    limit = request.args.get(b'limit')
     #UCID:Smr9; Date: 04/13/23
     # TODO search-3 append a LIKE filter for name if provided
     if name:
-        query += " AND c.name like %s"
-        args.append(f"%{name}%")
+        query += b" AND c.name like %s"
+        args.append(b"%" + name.encode('utf-8') + b"%")
     # TODO search-4 append an equality filter for country if provided
     if country:
-        query += " AND c.country like %s"
-        args.append(f"%{country}%")
+        query += b" AND c.country like %s"
+        args.append(b"%" + country.encode('utf-8') + b"%")
     # TODO search-5 append an equality filter for state if provided
     if state:
-        query += " AND c.state like %s"
-        args.append(f"%{state}%")
+        query += b" AND c.state like %s"
+        args.append(b"%" + state.encode('utf-8') + b"%")
     #UCID:Smr9; Date: 04/13/23
-    query += " GROUP BY c.id"
+    query += b" GROUP BY c.id"
     # TODO search-6 append sorting if column and order are provided and within the allows columsn and allowed order asc,desc
     if column and order:
-        if column in allowed_columns and order in ["asc", "desc"]:
-            query += f" ORDER BY {column} {order}"
+        if column in allowed_columns and order in [b"asc", b"desc"]:
+            query += b" ORDER BY " + column + b" " + order
     #UCID:Smr9; Date: 04/13/23
     # TODO search-7 append limit (default 10) or limit greater than 1 and less than or equal to 100
     # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
     if limit and int(limit) > 0 and int(limit) <= 100:
-        query += " LIMIT %s"
-        args.append(int(limit))
+        query += b" LIMIT %s"
+        args.append(int(limit).to_bytes(1, byteorder='big'))
     elif limit and (int(limit) <= 0 or int(limit) > 100):
-        flash("Enter the limit between 1 and 100", 'warning')
+        flash(b"Enter the limit between 1 and 100", b'warning')
     #UCID:Smr9; Date: 04/13/23
 
-    print("query", query)
-    print("args", args)
+    print(b"query", query)
+    print(b"args", args)
     try:
-        result = DB.selectAll(query, *args)
+        query_bytes = query.encode('utf-8')
+        args_bytes = [arg.encode('utf-8') if isinstance(arg, str) else arg for arg in args]
+        result = DB.selectAll(query_bytes, *args_bytes)
         # print(f"result {result.rows}")
         if result.status:
             rows = result.rows
@@ -64,12 +66,14 @@ def search():
     except Exception as e:
         # TODO search-9 make message user friendly
         flash(str(e), "danger")
+
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
 
     return render_template("list_companies.html", rows=rows, allowed_columns=allowed_list)
-    #UCID:Smr9; Date: 04/13/23
+
+
 
 
 @company.route("/add", methods=["GET", "POST"])
