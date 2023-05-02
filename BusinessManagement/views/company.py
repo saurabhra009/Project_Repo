@@ -106,7 +106,7 @@ def add():
         country = str(request.form['country'])
         state = str(request.form['state'])
         zip = str(request.form['zip'])
-        if not name:
+        if not zip:
             has_error = True
             flash("Zipcode is required", "danger")
         website = str(request.form['website'])

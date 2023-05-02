@@ -24,8 +24,8 @@ def importCSV():
         else:
             flash('Invalid File ', "warning")
             return redirect(request.url)
-
-        #UCID:Smr9; Date: 04/13/23
+            #UCID:Smr9; Date: 04/13/23
+        
         if file and secure_filename(file.filename):
             companies = []
             employees = []
@@ -90,8 +90,8 @@ def importCSV():
                     flash("There was an error loading in the csv data", "danger")
                     #UCID:Smr9; Date: 04/13/23
             else:
-                 # TODO importcsv-8 display flash message (info) that no employees were loaded
-                  flash("No employees records were loaded", "danger")
+                # TODO importcsv-8 display flash message (info) that no employees were loaded
+                flash("No employees records were loaded", "danger")
             return render_template("upload.html")
             try:
                 result = DB.selectOne("SHOW SESSION STATUS LIKE 'questions'")
