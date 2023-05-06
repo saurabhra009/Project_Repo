@@ -8,12 +8,20 @@ from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
 
-from flask_principal import Identity, AnonymousIdentity, \
-     identity_changed
+from flask_principal import Identity, AnonymousIdentity,identity_changed
 from email_validator import validate_email
 
 auth = Blueprint('auth', __name__, url_prefix='/',template_folder='templates')
 
+def check_duplicate(e):
+
+    import re
+    r = re.match(".*IS601_Users.(\w+)", e.args[0].args[1])
+    if r:
+        flash(f"The chosen {r.group(1   )} is not available", "warning")
+    else:
+        flash("Unknown error occurred, please try again", "danger")
+        print(e)
 
 @auth.route("/register", methods=["GET","POST"])
 def register():
@@ -30,7 +38,7 @@ def register():
             if result.status:
                 flash("Successfully registered","success")
         except Exception as e:
-            flash(str(e), "danger")
+            check_duplicate(e)
     return render_template("register.html", form=form)
 
 @auth.route("/login", methods=["GET", "POST"])
