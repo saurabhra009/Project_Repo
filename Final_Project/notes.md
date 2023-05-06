@@ -12,3 +12,4 @@ added roles, userroles tables and insert of admin role
 updated flask_login user lookup to use sessions instead of a db call per request
 
 del-11
+del-2
