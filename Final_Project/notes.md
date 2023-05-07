@@ -16,3 +16,4 @@ del-2
 del-3
 del-4
 del-5
+del-6
