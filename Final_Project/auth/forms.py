@@ -18,6 +18,6 @@ class ProfileForm(FlaskForm):
     username = StringField("username", validators=[DataRequired(), Length(2, 30)])
     email = EmailField("email", validators=[DataRequired(), Email()])
     current_password = PasswordField("current password", validators=[Optional()])
-    password = PasswordField("password", validators=[Optional(), EqualTo('confirm', message='Passwords must match')])
+    password = PasswordField("password", validators=[Optional(), Length(8), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField("confirm", validators=[Optional(), EqualTo("password")])
     submit = SubmitField("Update")
