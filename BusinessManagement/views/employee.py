@@ -196,7 +196,7 @@ def delete():
         except Exception as e:
             flash(f" Following exception occured while deleting the employee record: {str(e)}", "danger")
         del args["id"]
-    flash(f" id is missing", "danger")
+    #flash(f" id is missing", "danger")
     return redirect(url_for("employee.search", **args))
     pass
     #UCID:Smr9; Date: 04/13/23
