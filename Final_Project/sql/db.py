@@ -76,7 +76,9 @@ class DB:
 
     @staticmethod
     def delete(queryString, *args):
-        return DB.__runQuery(CRUD.DELETE, False, queryString, args)
+        x= DB.__runQuery(CRUD.DELETE, False, queryString, args)
+        print(x)
+        return x
         
     @staticmethod
     def update(queryString, *args):

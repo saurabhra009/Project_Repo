@@ -8,8 +8,8 @@ from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
 
-from flask_principal import Identity, AnonymousIdentity,identity_changed
-from email_validator import validate_email
+from flask_principal import Identity, AnonymousIdentity, \
+     identity_changed
 
 auth = Blueprint('auth', __name__, url_prefix='/',template_folder='templates')
 
@@ -47,18 +47,6 @@ def login():
     if form.validate_on_submit():
         is_valid = True
         email = form.email.data # email or username
-        if "@" in email:
-            try:
-                validate_email(email)
-            except:
-                is_valid = False
-                flash("Invalid email address", "danger")
-        else:
-            import re
-            r = re.fullmatch("/^[a-z0-9_-]{2,30}$/", email)
-            if r:
-                is_valid = False
-                flash("Invalid username", "danger")
         password = form.password.data
         if is_valid:
             try:
@@ -77,6 +65,11 @@ def login():
                             print("role rows", result.rows)
                             user.roles = [Role(**r) for r in result.rows]
                         print(f"Roles: {user.roles}")
+                        # getting or creating account here so we can lazy populate
+                        # existing users (prior to this feature implementation)
+                        #account = get_or_create_account(user.id)
+                        #user.account = Account(**account)
+
                         success = login_user(user) # login the user via flask_login
                         
                         if success:
@@ -128,11 +121,6 @@ def profile():
         is_valid = True
         email = form.email.data
         username = form.username.data
-        import re
-        r = re.fullmatch("/^[a-z0-9_-]{2,30}$/", username)
-        if r:
-            is_valid = False
-            flash("Invalid username", "danger")
         current_password = form.current_password.data
         password = form.password.data
         confirm = form.confirm.data
@@ -162,13 +150,17 @@ def profile():
                 if result.status:
                     flash("Saved profile", "success")
             except Exception as e:
-                flash(e, "danger")
+                check_duplicate(e)
     try:
         # get latest info if anything changed
         result = DB.selectOne("SELECT id, email, username FROM IS601_Users where id = %s", user_id)
         if result.status and result.row:
             user = User(**result.row)
-            form = ProfileForm(obj=user)
+            # switch how user is loaded so we don't lose error validations
+            # form = ProfileForm(obj=user)
+            print("loading user", user)
+            form.username.data = user.username
+            form.email.data = user.email
             # TODO update session
             current_user.email = user.email
             current_user.username = user.username
