@@ -255,8 +255,8 @@ def proceed_to_checkout():
     # verify cart
     has_error = False
     for item in cart:
-        if item["quantity"] > item["stock"]:
-            flash(f"Item {item['name']} doesn't have enough stock left", "warning")
+        if item["quantity"] > item["stock"]: # smr9 May3, 2023
+            flash(f"Item {item['name']} doesn't have enough stock left", "warning")# Verify stock/price of itmer
             has_error = True
         if item["cart_unit_price"] != item["item_unit_price"]:
             value_change=round(((item["item_unit_price"]-item["cart_unit_price"])/item["cart_unit_price"])*100,2)
@@ -292,10 +292,10 @@ def proceed_to_checkout():
             return redirect(url_for('shop.proceed_to_checkout'))
         if lastname=="":
             flash("Last Name is missing", "danger")
-            return redirect(url_for('shop.proceed_to_checkout'))
+            return redirect(url_for('shop.proceed_to_checkout')) #smr9 May 3, 2023
         if address=="":
             flash("Address is missing", "danger")
-            return redirect(url_for('shop.proceed_to_checkout'))
+            return redirect(url_for('shop.proceed_to_checkout')) # Code checking address pieces
         if city=="":
             flash("City is missing", "danger")
             return redirect(url_for('shop.proceed_to_checkout'))
@@ -328,8 +328,8 @@ def proceed_to_checkout():
                     flash("Error generating order", "danger")
                     DB.getDB().rollback()
                     has_error = True
-                elif int(money_received)!=int(total):
-                    flash("Please enter the correct amount","danger")
+                elif int(money_received)!=int(total): #Code to caerify paid amount vs cart amount
+                    flash("Please enter the correct amount","danger") #smr9 May3, 2023
                     DB.getDB().rollback()
                     has_error = True
                 else:
