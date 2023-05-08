@@ -4,7 +4,8 @@ import jsons # https://jsons.readthedocs.io/en/latest/index.html
 # helper to serialize any class
 class JsonSerializable(object):
     def toJson(self):
-        return jsons.dumps(self)
+        #https://stackoverflow.com/a/36142844
+        return jsons.dumps(self,default=str)
 
     def __repr__(self):
         return self.toJson()
