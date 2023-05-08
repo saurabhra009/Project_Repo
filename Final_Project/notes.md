@@ -10,3 +10,14 @@ added updated version of db.py
 renamed var in init_Db.py (not a functional change)
 added roles, userroles tables and insert of admin role
 updated flask_login user lookup to use sessions instead of a db call per request
+
+milestone-2
+del-1
+del-23
+del-3
+del-4
+del-5
+del-6
+del-7
+del-8
+del-9
